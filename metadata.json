@@ -1,0 +1,8 @@
+{
+  "name": "Daily Expense Diary",
+  "description": "Daily expense diary and monthly khata calculator with date-wise columns, category tracking, budget calculations, and export tools.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
