@@ -50,9 +50,11 @@ export default function App() {
   const [currentYear, setCurrentYear] = useState<number>(today.getFullYear());
   const [currentMonth, setCurrentMonth] = useState<number>(today.getMonth()); // 0-11
   const [language, setLanguage] = useState<Language>('hi');
-  const [viewMode, setViewMode] = useState<ViewMode>('diary');
+  const [viewMode, setViewMode] = useState<ViewMode>(() => {
+    return localStorage.getItem(BUDGET_KEY) ? 'table' : 'diary';
+  });
   const [currency, setCurrency] = useState<string>('₹');
-  const [budget, setBudget] = useState<number>(15000);
+  const [budget, setBudget] = useState<number>(0);
 
   // Search & Filter state
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -62,7 +64,9 @@ export default function App() {
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [editingItem, setEditingItem] = useState<ExpenseItem | null>(null);
   const [addModalInitialDate, setAddModalInitialDate] = useState<string>(getTodayKey());
-  const [isBudgetModalOpen, setIsBudgetModalOpen] = useState<boolean>(false);
+  const [isBudgetModalOpen, setIsBudgetModalOpen] = useState<boolean>(() => {
+    return !localStorage.getItem(BUDGET_KEY);
+  });
   const [isWhatsAppModalOpen, setIsWhatsAppModalOpen] = useState<boolean>(false);
 
   // Floating Mini Calculator Modal
@@ -148,8 +152,12 @@ export default function App() {
   };
 
   const handleSaveBudget = (newBudget: number) => {
+    const isFirstTime = !localStorage.getItem(BUDGET_KEY);
     setBudget(newBudget);
     localStorage.setItem(BUDGET_KEY, String(newBudget));
+    if (isFirstTime) {
+      setViewMode('table');
+    }
   };
 
   const handleSaveCurrency = (newCurrency: string) => {
@@ -275,83 +283,95 @@ export default function App() {
       />
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 print:hidden">
-        {/* Quick Add Bar for instant entry */}
-        <QuickAddBar
-          onAddExpense={handleAddExpense}
-          language={language}
-          currency={currency}
-          defaultDate={getTodayKey()}
-          onOpenMiniCalculator={handleOpenMiniCalc}
-        />
-
-        {/* Monthly Summary & Calculator Component */}
-        <MonthlySummaryCalculator
-          summary={monthSummary}
-          language={language}
-          currency={currency}
-          onOpenBudgetModal={() => setIsBudgetModalOpen(true)}
-          onOpenMiniCalculator={() => handleOpenMiniCalc()}
-          onSelectCategoryFilter={setSelectedCategoryFilter}
-          selectedCategoryFilter={selectedCategoryFilter}
-        />
-
-        {/* Active View: Diary Columns / Table / Calendar / Analytics */}
-        {viewMode === 'diary' && (
-          <DiaryBookView
-            ledgers={ledgers}
+      {budget === 0 ? (
+        <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 print:hidden flex flex-col items-center justify-center min-h-[50vh]">
+          <div className="flex flex-col items-center opacity-80">
+            <div className="animate-bounce mb-4 bg-slate-100 p-4 rounded-full shadow-inner border border-slate-200">
+              <Wallet className="w-12 h-12 text-slate-400" />
+            </div>
+            <p className="text-slate-500 font-bold text-lg text-center">Awaiting Budget Configuration...</p>
+            <p className="text-slate-400 text-sm mt-2 text-center">Please set your monthly budget in the popup to start.</p>
+          </div>
+        </main>
+      ) : (
+        <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 print:hidden">
+          {/* Quick Add Bar for instant entry */}
+          <QuickAddBar
+            onAddExpense={handleAddExpense}
             language={language}
             currency={currency}
-            onAddForDate={handleOpenAddForDate}
-            onEditItem={handleOpenEditItem}
-            onDeleteItem={handleDeleteExpense}
-            selectedCategoryFilter={selectedCategoryFilter}
-            onSelectCategoryFilter={setSelectedCategoryFilter}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
+            defaultDate={getTodayKey()}
+            onOpenMiniCalculator={handleOpenMiniCalc}
           />
-        )}
 
-        {viewMode === 'table' && (
-          <TableView
-            expenses={expenses}
-            language={language}
-            currency={currency}
-            onEditItem={handleOpenEditItem}
-            onDeleteItem={handleDeleteExpense}
-            onOpenAddModal={() => {
-              setEditingItem(null);
-              setAddModalInitialDate(getTodayKey());
-              setIsAddModalOpen(true);
-            }}
-            onExportCsv={handleExportCsv}
-            year={currentYear}
-            month={currentMonth}
-          />
-        )}
-
-        {viewMode === 'calendar' && (
-          <CalendarMonthView
-            year={currentYear}
-            month={currentMonth}
-            ledgers={ledgers}
-            language={language}
-            currency={currency}
-            onSelectDate={(d) => handleOpenAddForDate(d)}
-            onAddForDate={handleOpenAddForDate}
-          />
-        )}
-
-        {viewMode === 'analytics' && (
-          <AnalyticsView
+          {/* Monthly Summary & Calculator Component */}
+          <MonthlySummaryCalculator
             summary={monthSummary}
-            ledgers={ledgers}
             language={language}
             currency={currency}
             onOpenBudgetModal={() => setIsBudgetModalOpen(true)}
+            onOpenMiniCalculator={() => handleOpenMiniCalc()}
+            onSelectCategoryFilter={setSelectedCategoryFilter}
+            selectedCategoryFilter={selectedCategoryFilter}
           />
-        )}
-      </main>
+
+          {/* Active View: Diary Columns / Table / Calendar / Analytics */}
+          {viewMode === 'diary' && (
+            <DiaryBookView
+              ledgers={ledgers}
+              language={language}
+              currency={currency}
+              onAddForDate={handleOpenAddForDate}
+              onEditItem={handleOpenEditItem}
+              onDeleteItem={handleDeleteExpense}
+              selectedCategoryFilter={selectedCategoryFilter}
+              onSelectCategoryFilter={setSelectedCategoryFilter}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+            />
+          )}
+
+          {viewMode === 'table' && (
+            <TableView
+              expenses={expenses}
+              language={language}
+              currency={currency}
+              onEditItem={handleOpenEditItem}
+              onDeleteItem={handleDeleteExpense}
+              onOpenAddModal={() => {
+                setEditingItem(null);
+                setAddModalInitialDate(getTodayKey());
+                setIsAddModalOpen(true);
+              }}
+              onExportCsv={handleExportCsv}
+              year={currentYear}
+              month={currentMonth}
+            />
+          )}
+
+          {viewMode === 'calendar' && (
+            <CalendarMonthView
+              year={currentYear}
+              month={currentMonth}
+              ledgers={ledgers}
+              language={language}
+              currency={currency}
+              onSelectDate={(d) => handleOpenAddForDate(d)}
+              onAddForDate={handleOpenAddForDate}
+            />
+          )}
+
+          {viewMode === 'analytics' && (
+            <AnalyticsView
+              summary={monthSummary}
+              ledgers={ledgers}
+              language={language}
+              currency={currency}
+              onOpenBudgetModal={() => setIsBudgetModalOpen(true)}
+            />
+          )}
+        </main>
+      )}
 
       {/* Printable Ledger Sheet Component (Shows only during window.print()) */}
       <ReceiptPrintView

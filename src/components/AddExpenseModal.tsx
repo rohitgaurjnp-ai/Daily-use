@@ -97,8 +97,8 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
       >
         {/* Header */}
         <div className="p-4 sm:p-5 bg-slate-900 text-white flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
+          <div className="flex items-center gap-3 group cursor-default">
+            <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">
               <Plus className="w-5 h-5 text-emerald-400" />
             </div>
             <div>
@@ -315,9 +315,9 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
             <button
               type="submit"
               id="modal-save-expense-btn"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-md shadow-emerald-600/20 transition flex items-center gap-2 cursor-pointer active:scale-95"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-md shadow-emerald-600/20 transition flex items-center gap-2 cursor-pointer active:scale-95 group"
             >
-              <Save className="w-4 h-4" />
+              <Save className="w-4 h-4 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5" />
               <span>{editingItem ? 'Update' : 'Save'}</span>
             </button>
           </div>

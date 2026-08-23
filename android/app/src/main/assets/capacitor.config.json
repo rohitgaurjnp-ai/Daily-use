@@ -1,0 +1,5 @@
+{
+	"appId": "com.expensediary.app",
+	"appName": "Expense Diary",
+	"webDir": "dist"
+}

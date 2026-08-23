@@ -54,8 +54,8 @@ export const MonthlySummaryCalculator: React.FC<MonthlySummaryCalculatorProps> =
 
       {/* Top Banner / Heading */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-800 relative z-10">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-slate-800 text-emerald-400 flex items-center justify-center border border-slate-700">
+        <div className="flex items-center gap-2.5 group cursor-default">
+          <div className="w-9 h-9 rounded-xl bg-slate-800 text-emerald-400 flex items-center justify-center border border-slate-700 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">
             <Calculator className="w-5 h-5" />
           </div>
           <div>
@@ -81,9 +81,9 @@ export const MonthlySummaryCalculator: React.FC<MonthlySummaryCalculatorProps> =
           <button
             id="set-budget-modal-btn"
             onClick={onOpenBudgetModal}
-            className="text-xs font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-sm"
+            className="text-xs font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-sm group"
           >
-            <Wallet className="w-3.5 h-3.5" />
+            <Wallet className="w-3.5 h-3.5 transition-transform group-hover:scale-110 group-hover:-translate-y-0.5" />
             <span>{summary.budget > 0 ? `बजट: ${formatCurrency(summary.budget, currency)}` : t.setBudget}</span>
           </button>
         </div>

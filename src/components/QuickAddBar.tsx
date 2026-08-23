@@ -70,112 +70,101 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({
   };
 
   return (
-    <div id="quick-add-bar-container" className="bg-white rounded-2xl border border-slate-200 p-4 mb-6 shadow-sm">
-      {/* Header text */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <span className="text-xs sm:text-sm font-bold text-slate-800 font-sans">
+    <div className="bg-[#e2e8f0] p-4 sm:p-5 rounded-[24px] mb-6 mx-2 sm:mx-0 shadow-inner">
+      <div id="quick-add-bar-container" className="bg-white rounded-[20px] p-4 sm:p-5 shadow-sm relative">
+        {/* Floating Add Note Badge? Actually let's just make the header look like the screenshot */}
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-xs font-bold text-slate-700">
             Quick Daily Expense Entry
           </span>
         </div>
-        <span className="text-[11px] text-slate-400 font-medium hidden sm:inline">
-          तारीख चुनें, सामान का नाम व रकम लिखकर डायरी में दर्ज करें
-        </span>
-      </div>
 
-      {/* Main Form Fields Grid */}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-4">
+        {/* Main Form Fields Grid */}
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Date Picker */}
-          <div className="sm:col-span-3">
-            <label className="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wider">
-              Date
+          <div>
+            <label className="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wider">
+              DATE
             </label>
-            <div className="relative">
-              <input
-                type="date"
-                id="quick-add-date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-medium text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 transition-colors"
-                required
-              />
-            </div>
+            <input
+              type="date"
+              id="quick-add-date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full bg-[#f1f5f9] border-none rounded-xl px-3 py-2.5 text-sm font-bold text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-slate-300 transition-colors"
+              required
+            />
           </div>
 
           {/* Item Name (Kya Kharida) */}
-          <div className="sm:col-span-5">
-            <label className="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wider">
-              Item Name
+          <div>
+            <label className="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wider">
+              ITEM NAME
             </label>
             <input
               type="text"
               id="quick-add-item-name"
-              placeholder={t.quickAddPlaceholder}
+              placeholder="What did you buy? (e.g. Milk, Cab, Petrol)"
               value={itemName}
               onChange={(e) => {
                 setItemName(e.target.value);
                 if (error) setError('');
               }}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 transition-colors"
+              className="w-full bg-[#f1f5f9] border-none rounded-xl px-3 py-2.5 text-sm font-bold text-slate-700 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-slate-300 transition-colors"
               required
             />
           </div>
 
           {/* Amount (Rupaye) with integrated calc button */}
-          <div className="sm:col-span-2">
-            <label className="block text-xs font-bold text-slate-600 mb-1.5 flex items-center justify-between uppercase tracking-wider">
-              <span>Amount</span>
+          <div>
+            <label className="block text-[10px] font-bold text-slate-500 mb-1.5 flex items-center justify-between uppercase tracking-wider">
+              <span>AMOUNT</span>
               <button
                 type="button"
                 onClick={() => onOpenMiniCalculator((val) => setAmount(String(val)))}
-                className="text-[10px] text-emerald-600 hover:text-emerald-700 font-bold flex items-center gap-0.5 cursor-pointer"
+                className="text-emerald-500 hover:text-emerald-600 bg-emerald-50 p-1 rounded-md cursor-pointer"
                 title="कैलकुलेटर खोलें"
               >
                 <Calculator className="w-3 h-3" />
               </button>
             </label>
-            <div className="relative">
-              <input
-                type="number"
-                id="quick-add-amount"
-                placeholder="0.00"
-                min="0.1"
-                step="any"
-                value={amount}
-                onChange={(e) => {
-                  setAmount(e.target.value);
-                  if (error) setError('');
-                }}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-mono font-bold text-emerald-600 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 transition-colors"
-                required
-              />
-            </div>
+            <input
+              type="number"
+              id="quick-add-amount"
+              placeholder="0.00"
+              min="0.1"
+              step="any"
+              value={amount}
+              onChange={(e) => {
+                setAmount(e.target.value);
+                if (error) setError('');
+              }}
+              className="w-full bg-[#f1f5f9] border-none rounded-xl px-3 py-2.5 text-sm font-bold text-slate-700 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-slate-300 transition-colors"
+              required
+            />
           </div>
 
           {/* Submit Button */}
-          <div className="sm:col-span-2 flex items-end">
+          <div className="pt-2">
             <button
               type="submit"
               id="quick-add-submit-btn"
-              className="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-2 px-3 rounded-xl transition text-sm flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
+              className="w-full bg-[#0f172a] hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-xl transition text-sm flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer shadow-md"
             >
               <span>+ Add</span>
             </button>
           </div>
-        </div>
 
-        {/* Secondary Row: Category, Payment Mode, and Notes toggle */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100">
-          <div className="flex flex-wrap items-center gap-3 text-sm">
+          {/* Secondary Row: Category, Payment Mode, and Notes toggle */}
+          <div className="flex flex-col gap-3 pt-4 border-t border-slate-100">
             {/* Category Selector */}
             <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-slate-500">Category:</span>
+              <span className="text-[10px] font-bold text-slate-500">Category:</span>
               <select
                 id="quick-add-category-select"
                 value={category}
                 onChange={(e) => setCategory(e.target.value as ExpenseCategory)}
-                className="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-xs font-medium text-slate-700 focus:outline-hidden cursor-pointer"
+                className="bg-[#f8fafc] border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-bold text-slate-600 focus:outline-hidden cursor-pointer"
               >
                 {Object.entries(categoryMeta).map(([catKey, meta]) => (
                   <option key={catKey} value={catKey}>
@@ -186,73 +175,64 @@ export const QuickAddBar: React.FC<QuickAddBarProps> = ({
             </div>
 
             {/* Payment Method */}
-            <div className="flex items-center gap-1">
-              <span className="text-xs font-medium text-slate-500 ml-2">Mode:</span>
-              {(['upi', 'cash', 'card', 'udhar'] as PaymentMethod[]).map((mode) => (
-                <button
-                  type="button"
-                  key={mode}
-                  onClick={() => setPaymentMethod(mode)}
-                  className={`px-2 py-0.5 rounded-md text-[11px] font-medium border transition cursor-pointer ${
-                    paymentMethod === mode
-                      ? 'bg-slate-800 text-white border-slate-800'
-                      : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-                  }`}
-                >
-                  {mode === 'upi' ? 'UPI' : mode === 'cash' ? 'Cash' : mode === 'card' ? 'Card' : 'Credit'}
-                </button>
-              ))}
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center gap-1">
+                <span className="text-[10px] font-bold text-slate-500 mr-1">Mode:</span>
+                {(['upi', 'cash', 'card', 'udhar'] as PaymentMethod[]).map((mode) => (
+                  <button
+                    type="button"
+                    key={mode}
+                    onClick={() => setPaymentMethod(mode)}
+                    className={`px-2 py-1 rounded-lg text-[10px] font-bold border transition cursor-pointer ${
+                      paymentMethod === mode
+                        ? 'bg-[#0f172a] text-white border-[#0f172a]'
+                        : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                    }`}
+                  >
+                    {mode === 'upi' ? 'UPI' : mode === 'cash' ? 'Cash' : mode === 'card' ? 'Card' : 'Credit'}
+                  </button>
+                ))}
+              </div>
+
+              {/* Extra notes toggle */}
+              <button
+                type="button"
+                onClick={() => setShowExtra(!showExtra)}
+                className="text-[10px] text-emerald-500 font-bold hover:text-emerald-600 cursor-pointer"
+              >
+                {showExtra ? 'Remove Note' : '+ Add Note'}
+              </button>
             </div>
 
-            {/* Extra notes toggle */}
-            <button
-              type="button"
-              onClick={() => setShowExtra(!showExtra)}
-              className="text-[11px] text-emerald-600 hover:text-emerald-700 font-medium ml-2 cursor-pointer"
-            >
-              {showExtra ? 'Remove Note' : '+ Add Note'}
-            </button>
+            {error && (
+              <span className="text-xs text-rose-500 font-bold bg-rose-50 px-2 py-1 rounded-md border border-rose-200 inline-block mt-1">
+                {error}
+              </span>
+            )}
           </div>
 
-          {error && (
-            <span className="text-xs text-rose-500 font-medium bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200">
-              {error}
-            </span>
+          {/* Optional Notes Input */}
+          {showExtra && (
+            <div className="pt-2">
+              <input
+                type="text"
+                placeholder="Add details, bill numbers, etc..."
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                className="w-full bg-[#f1f5f9] border-none rounded-xl px-3 py-2.5 text-sm font-bold text-slate-700 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-slate-300"
+              />
+            </div>
           )}
-        </div>
-
-        {/* Optional Notes Input */}
-        {showExtra && (
-          <div className="pt-2">
-            <input
-              type="text"
-              placeholder="Add details, bill numbers, etc..."
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
-            />
-          </div>
-        )}
-
-        {/* Quick Suggestion Chips (1-Click Fill) */}
-        <div className="flex items-center gap-2 overflow-x-auto pt-3 pb-1 scrollbar-thin">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider shrink-0 flex items-center gap-1">
-            <Zap className="w-3 h-3 text-amber-400" />
-            <span>Frequent:</span>
-          </span>
-          {quickSuggestions.slice(0, 6).map((item, idx) => (
-            <button
-              type="button"
-              key={idx}
-              onClick={() => handleQuickChipClick(item)}
-              className="shrink-0 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium px-3 py-1.5 rounded-full transition shadow-sm flex items-center gap-1.5 cursor-pointer active:scale-95"
-            >
-              <span>{language === 'hi' ? item.nameHi : language === 'hinglish' ? item.nameHinglish : item.name}</span>
-              <span className="font-mono text-emerald-600 font-bold">₹{item.defaultAmount}</span>
-            </button>
-          ))}
-        </div>
-      </form>
+        </form>
+        
+        {/* Big Floating Action Button overlaid at bottom right */}
+        <button
+          onClick={() => document.getElementById('primary-add-expense-btn')?.click()}
+          className="absolute -bottom-4 -right-4 w-12 h-12 bg-[#0f172a] text-white rounded-full flex items-center justify-center shadow-xl hover:bg-slate-800 hover:scale-110 transition-all duration-300 active:scale-95 group"
+        >
+          <Plus className="w-6 h-6 transition-transform duration-500 group-hover:rotate-180" />
+        </button>
+      </div>
     </div>
   );
 };

@@ -60,208 +60,168 @@ export const Header: React.FC<HeaderProps> = ({
   const monthDisplay = getCalMonthName(currentMonth, language);
 
   return (
-    <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-      {/* Top Banner Bar */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2">
-        {/* Left: Brand / Title */}
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-md shadow-slate-900/20">
+    <header className="bg-white sticky top-0 z-30">
+      <div className="max-w-3xl mx-auto px-4 py-4 flex flex-col gap-3">
+        {/* Row 1: Brand / Title */}
+        <div className="flex items-center gap-3 group cursor-pointer">
+          <div className="w-11 h-11 rounded-[14px] bg-[#0f172a] text-white flex items-center justify-center shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">
             <BookOpen className="w-5 h-5" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-800 font-sans">
-                {t.appName}
-              </h1>
-              <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                बहीखाता डायरी
-              </span>
-            </div>
-            <p className="text-xs text-slate-500 hidden sm:block">
-              Daily Purchase & Monthly Expense Tracker
-            </p>
-          </div>
+          <h1 className="text-[22px] font-bold tracking-tight text-[#334155] leading-none transition-colors duration-300 group-hover:text-emerald-600">
+            {t.appName}
+          </h1>
         </div>
 
-        {/* Center: Month Navigator */}
-        <div className="flex items-center bg-slate-50 border border-slate-200 rounded-xl p-1 shadow-sm">
-          <button
-            id="prev-month-btn"
-            onClick={onPrevMonth}
-            className="p-1.5 hover:bg-slate-200 rounded-lg text-slate-700 transition active:scale-95"
-            title="पिछला महीना (Previous Month)"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-
-          <div className="px-2.5 sm:px-4 py-0.5 text-center">
-            <div className="text-sm font-bold text-slate-800 font-sans flex items-center gap-1">
-              <span>{monthDisplay}</span>
-              <span>{currentYear}</span>
+        {/* Row 2: Month Navigator & Today */}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center bg-[#d1d5db] rounded-full px-1 py-0.5 shadow-inner">
+            <button
+              onClick={onPrevMonth}
+              className="p-1 hover:bg-slate-300 rounded-full text-slate-700 transition"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <div className="px-2 text-sm font-bold text-slate-800">
+              {monthDisplay} {currentYear}
             </div>
+            <button
+              onClick={onNextMonth}
+              className="p-1 hover:bg-slate-300 rounded-full text-slate-700 transition"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
-
           <button
-            id="next-month-btn"
-            onClick={onNextMonth}
-            className="p-1.5 hover:bg-slate-200 rounded-lg text-slate-700 transition active:scale-95"
-            title="अगला महीना (Next Month)"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-
-          <button
-            id="today-btn"
             onClick={onGoToToday}
-            className="ml-1 text-[11px] font-semibold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 px-2 py-1 rounded-lg transition shadow-sm"
+            className="text-[11px] font-bold bg-[#e5e7eb] text-slate-700 hover:bg-slate-300 px-3 py-1 rounded-full transition shadow-inner border border-[#d1d5db]"
           >
             आज (Today)
           </button>
         </div>
 
-        {/* Right: Quick Actions & Language */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          {/* Language Switcher */}
-          <div className="flex items-center bg-slate-100 rounded-lg p-0.5 border border-slate-200 text-xs">
+        {/* Row 3: Actions */}
+        <div className="flex items-center justify-between gap-2 overflow-x-auto scrollbar-none pb-1">
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Language Switcher */}
+            <div className="flex items-center bg-slate-50 rounded-lg p-0.5 border border-slate-200 text-[11px] font-bold">
+              <button
+                onClick={() => onLanguageChange('hi')}
+                className={`px-2 py-1 rounded-md transition ${
+                  language === 'hi' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500'
+                }`}
+              >
+                हिन्दी
+              </button>
+              <button
+                onClick={() => onLanguageChange('hinglish')}
+                className={`px-2 py-1 rounded-md transition ${
+                  language === 'hinglish' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500'
+                }`}
+              >
+                Hinglish
+              </button>
+              <button
+                onClick={() => onLanguageChange('en')}
+                className={`px-2 py-1 rounded-md transition ${
+                  language === 'en' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500'
+                }`}
+              >
+                EN
+              </button>
+            </div>
+
             <button
-              onClick={() => onLanguageChange('hi')}
-              className={`px-2 py-1 rounded-md font-medium transition ${
-                language === 'hi'
-                  ? 'bg-white text-slate-900 shadow-2xs font-bold'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
+              onClick={onOpenWhatsAppModal}
+              className="p-1.5 text-emerald-500 bg-emerald-50 border border-emerald-100 rounded-lg transition hover:bg-emerald-100 group"
             >
-              हिन्दी
+              <Share2 className="w-4 h-4 transition-transform group-hover:scale-110 group-hover:-rotate-12" />
             </button>
             <button
-              onClick={() => onLanguageChange('hinglish')}
-              className={`px-2 py-1 rounded-md font-medium transition ${
-                language === 'hinglish'
-                  ? 'bg-white text-slate-900 shadow-2xs font-bold'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
+              onClick={onPrint}
+              className="p-1.5 text-slate-500 bg-slate-100 border border-slate-200 rounded-lg transition hover:bg-slate-200 group"
             >
-              Hinglish
+              <Printer className="w-4 h-4 transition-transform group-hover:scale-110 group-hover:-translate-y-0.5" />
             </button>
             <button
-              onClick={() => onLanguageChange('en')}
-              className={`px-2 py-1 rounded-md font-medium transition ${
-                language === 'en'
-                  ? 'bg-white text-slate-900 shadow-2xs font-bold'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
+              onClick={onOpenSettings}
+              className="p-1.5 text-[#ff0000] bg-red-50 border border-red-100 rounded-lg transition hover:bg-red-100 group"
             >
-              EN
+              <Settings className="w-4 h-4 transition-transform group-hover:rotate-90 duration-500" />
             </button>
           </div>
-
-          {/* Share WhatsApp */}
           <button
-            id="whatsapp-share-btn"
-            onClick={onOpenWhatsAppModal}
-            className="p-2 text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition"
-            title={t.shareWhatsApp}
-          >
-            <Share2 className="w-4 h-4" />
-          </button>
-
-          {/* Print/PDF */}
-          <button
-            id="print-ledger-btn"
-            onClick={onPrint}
-            className="p-2 text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg transition"
-            title={t.exportPdf}
-          >
-            <Printer className="w-4 h-4" />
-          </button>
-
-          {/* Settings */}
-          <button
-            id="settings-btn"
-            onClick={onOpenSettings}
-            className="p-2 !text-[#ff0000] bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg transition"
-            title={t.settings}
-          >
-            <Settings className="w-4 h-4" />
-          </button>
-
-          {/* Big Add Expense Button */}
-          <button
-            id="primary-add-expense-btn"
             onClick={onOpenAddModal}
-            className="bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
+            className="shrink-0 bg-[#0f172a] hover:bg-slate-800 text-white text-[11px] font-bold px-4 py-1.5 rounded-[14px] transition flex flex-col items-center justify-center leading-tight shadow-md group"
           >
-            <PlusCircle className="w-4 h-4" />
-            <span>{t.addExpense}</span>
+            <div className="flex items-center gap-1">
+              <PlusCircle className="w-3 h-3 transition-transform duration-300 group-hover:scale-125 group-hover:rotate-180" />
+              <span>Add</span>
+            </div>
+            <span>Expense</span>
+          </button>
+        </div>
+
+        {/* Row 4: View Tabs */}
+        <div className="flex items-center justify-between bg-slate-100 p-1.5 rounded-2xl border border-slate-200 text-[10px] sm:text-xs font-bold text-slate-500 mt-1">
+          <button
+            onClick={() => onViewModeChange('diary')}
+            className={`flex flex-col items-center gap-0.5 px-2 sm:px-3 py-1.5 rounded-xl transition ${
+              viewMode === 'diary'
+                ? 'bg-white text-slate-800 shadow-sm border border-slate-200'
+                : 'hover:text-slate-800'
+            }`}
+          >
+            <span>Diary</span>
+            <span>Book</span>
+          </button>
+          <div className="w-1 h-1 rounded-full bg-slate-300"></div>
+          <button
+            onClick={() => onViewModeChange('table')}
+            className={`flex flex-col items-center gap-0.5 px-2 sm:px-3 py-1.5 rounded-xl transition ${
+              viewMode === 'table'
+                ? 'bg-white text-slate-800 shadow-sm border border-slate-200'
+                : 'hover:text-slate-800'
+            }`}
+          >
+            <span>Table</span>
+            <span>Sheet</span>
+          </button>
+          <div className="w-1 h-1 rounded-full bg-slate-300"></div>
+          <button
+            onClick={() => onViewModeChange('calendar')}
+            className={`flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-xl transition ${
+              viewMode === 'calendar'
+                ? 'bg-white text-slate-800 shadow-sm border border-slate-200'
+                : 'hover:text-slate-800'
+            }`}
+          >
+            <CalendarIcon className="w-3.5 h-3.5" />
+            <span>Calendar</span>
+          </button>
+          <div className="w-1 h-1 rounded-full bg-slate-300"></div>
+          <button
+            onClick={() => onViewModeChange('analytics')}
+            className={`flex flex-col items-center gap-0.5 px-2 sm:px-3 py-1.5 rounded-xl transition ${
+              viewMode === 'analytics'
+                ? 'bg-white text-slate-800 shadow-sm border border-slate-200'
+                : 'hover:text-slate-800'
+            }`}
+          >
+            <span>Calculator</span>
+            <span>& Analytics</span>
           </button>
         </div>
       </div>
-
-      {/* Navigation Sub-bar: View Selector */}
-      <div className="bg-white border-t border-slate-100 px-3 sm:px-6 py-1.5">
-        <div className="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-2">
-          {/* View Mode Tabs */}
-          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium">
-            <button
-              id="view-tab-diary"
-              onClick={() => onViewModeChange('diary')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition cursor-pointer ${
-                viewMode === 'diary'
-                  ? 'bg-white text-slate-900 font-bold shadow-sm border border-slate-200'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
-              }`}
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>{t.diaryView}</span>
-            </button>
-
-            <button
-              id="view-tab-table"
-              onClick={() => onViewModeChange('table')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition cursor-pointer ${
-                viewMode === 'table'
-                  ? 'bg-white text-slate-900 font-bold shadow-sm border border-slate-200'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
-              }`}
-            >
-              <TableIcon className="w-3.5 h-3.5" />
-              <span>{t.tableView}</span>
-            </button>
-
-            <button
-              id="view-tab-calendar"
-              onClick={() => onViewModeChange('calendar')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition cursor-pointer ${
-                viewMode === 'calendar'
-                  ? 'bg-white text-slate-900 font-bold shadow-sm border border-slate-200'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
-              }`}
-            >
-              <CalendarIcon className="w-3.5 h-3.5" />
-              <span>{t.calendarView}</span>
-            </button>
-
-            <button
-              id="view-tab-analytics"
-              onClick={() => onViewModeChange('analytics')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition cursor-pointer ${
-                viewMode === 'analytics'
-                  ? 'bg-white text-slate-900 font-bold shadow-sm border border-slate-200'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
-              }`}
-            >
-              <Calculator className="w-3.5 h-3.5" />
-              <span>{t.analyticsView}</span>
-            </button>
-          </div>
-
-          {/* Quick Header Stat badge */}
-          <div className="text-xs text-slate-500 flex items-center gap-2 font-medium">
-            <span className="uppercase tracking-widest">{t.totalMonthlyExpense}:</span>
-            <span className="text-sm sm:text-base font-bold text-emerald-600 font-mono">
-              {currency}{totalMonthExpense.toLocaleString('en-IN')}
-            </span>
-          </div>
+      
+      {/* Row 5: Total Monthly Expense */}
+      <div className="border-t border-slate-100 bg-white">
+        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-2">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+            {t.totalMonthlyExpense}:
+          </span>
+          <span className="text-sm font-bold text-emerald-600">
+            {currency}{totalMonthExpense.toLocaleString('en-IN')}
+          </span>
         </div>
       </div>
     </header>

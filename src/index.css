@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: 'Balsamiq Sans', 'Comic Sans MS', cursive;
+  --font-serif: 'Balsamiq Sans', 'Comic Sans MS', cursive;
+}
+
+body {
+  font-family: 'Balsamiq Sans', 'Comic Sans MS', cursive;
+}
